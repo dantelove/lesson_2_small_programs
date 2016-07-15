@@ -8,3 +8,4 @@
 
 def every_other(arr)
 end
+end
