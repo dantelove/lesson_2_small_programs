@@ -7,3 +7,4 @@
 #Return new array with every other element
 
 def every_other(arr)
+end
