@@ -20,7 +20,6 @@ end
 puts MESSAGES['welcome']
 
 loop do # main loop
-
   l = ''
   loop do
     puts MESSAGES['loan_amount']
@@ -61,15 +60,14 @@ loop do # main loop
 
   n = loan_duration.to_f * 12
 
-  result = l.to_f*(c*(1 + c)**n)/((1 + c)**n - 1)
+  result = l.to_f * (c * (1 + c)**n) / ((1 + c)**n - 1)
 
   puts "Your monthly payment would be about #{result.round(2)}"
 
   puts MESSAGES['another_loan']
   puts MESSAGES['start_over']
   input = gets.chomp
-  break unless input.downcase == "yes" 
-
+  break unless input.casecmp == "yes"
 end
 
 puts MESSAGES['thank_you']
