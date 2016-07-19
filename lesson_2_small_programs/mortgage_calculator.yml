@@ -1,0 +1,12 @@
+# mortgage_calculator.yml
+
+welcome: "Welcome to the Mortgage Calculator!"
+loan_amount: "Enter loan amount:"
+invalid_loan_amount: "Please enter a positive loan amount."
+enter_apr: "Enter Annual Percentage Rate (APR):"
+invalid_apr: "Please enter a positive APR."
+loan_duration: "Enter laon duration in years:"
+invalid_loan_duration: "Please enter a positive loan duration."
+another_loan: "Would you like to calculate another loan?"
+start_over: "Type 'YES' to start over."
+thank_you: "Thank you for using the Mortgage Calculator! Goodbye."
