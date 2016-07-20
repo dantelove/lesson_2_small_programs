@@ -44,31 +44,19 @@ loop do # main loop
     cpu_selection = "Rock"
   when 33..65
     puts "The computer selects Paper!"
-    cpu_selection = "Scissors"
+    cpu_selection = "Paper"
   when 66..99
     puts "The computer selects Scissors!"
     cpu_selection = "Scissors"
   end
 
   case [cpu_selection, player_selection]
-  when ["Rock","Rock"]
-    puts "TIE! You both choose Rock! Try Again."
-  when ["Paper","Rock"]
-    puts "You Lose! Paper beats Rock!"
-  when  ["Scissors","Rock"]
-    puts "You Win! Rock beats Scissors!"
-  when ["Rock","Paper"]
-    puts "You Win! Paper beats Rock!"
-  when  ["Paper","Paper"]
-    puts "TIE! You both choose Paper! Try Again."
-  when ["Scissors", "Paper"]
-    puts "You Lose! Scissors beats Paper!"
-  when ["Rock","Scissors"]
-    puts "You Lose! Rock beats Scissors!"
-  when ["Paper", "Scissors"]
-    puts "You Win! Scissors beats Paper!"
-  when ["Scissors","Scissors"]
-    puts "TIE! You both choose Scissors! Try Again."
+  when ["Rock","Rock"], ["Paper","Paper"], ["Scissors","Scissors"]
+    puts "TIE! You both choose #{cpu_selection}! Try Again."
+  when ["Paper","Rock"], ["Scissors", "Paper"], ["Rock","Scissors"]
+    puts "You LOSE! #{cpu_selection} beats #{player_selection}!"
+  when  ["Scissors","Rock"], ["Rock","Paper"], ["Paper", "Scissors"]
+    puts "You WIN! #{player_selection} beats #{cpu_selection}!"
   end
 end
 
