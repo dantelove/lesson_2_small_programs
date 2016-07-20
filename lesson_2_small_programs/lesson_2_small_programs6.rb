@@ -4,6 +4,9 @@
 
 # my attempt to build the game before watching the walkthrough
 
+player_score = 0
+cpu_score = 0
+
 puts "Welcome to Rock-Paper-Scissors Extraordinaire!"
 
 loop do # main loop
@@ -53,11 +56,32 @@ loop do # main loop
   case [cpu_selection, player_selection]
   when ["Rock","Rock"], ["Paper","Paper"], ["Scissors","Scissors"]
     puts "TIE! You both choose #{cpu_selection}! Try Again."
+    puts "---------------------------------"
+    puts "Current Score: Player #{player_score}: CPU #{cpu_score}"
+    puts "---------------------------------"
   when ["Paper","Rock"], ["Scissors", "Paper"], ["Rock","Scissors"]
     puts "You LOSE! #{cpu_selection} beats #{player_selection}!"
+    cpu_score = cpu_score + 1
+    puts "---------------------------------"
+    puts "Current Score: Player #{player_score}: CPU #{cpu_score}"
+    puts "---------------------------------"
   when  ["Scissors","Rock"], ["Rock","Paper"], ["Paper", "Scissors"]
     puts "You WIN! #{player_selection} beats #{cpu_selection}!"
+    player_score = player_score + 1
+    puts "---------------------------------"
+    puts "Current Score: Player #{player_score}: CPU #{cpu_score}"
+    puts "---------------------------------"
   end
 end
+
+puts "---------------------------------"
+puts "FINAL SCORE: Player #{player_score}: CPU #{cpu_score}"
+puts "---------------------------------"
+
+  if player_score > cpu_score
+    puts "YOU WIN!"
+  else
+    puts "Better luck next time. CPU WINS!"
+  end
 
 puts "Thanks for playing Rock, Paper, Scissors!"
