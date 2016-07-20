@@ -54,20 +54,20 @@ loop do # main loop
   end
 
   case [cpu_selection, player_selection]
-  when ["Rock","Rock"], ["Paper","Paper"], ["Scissors","Scissors"]
+  when %w(Rock Rock), %w(Paper Paper), %w(Scissors Scissors)
     puts "TIE! You both choose #{cpu_selection}! Try Again."
     puts "---------------------------------"
     puts "Current Score: Player #{player_score}: CPU #{cpu_score}"
     puts "---------------------------------"
-  when ["Paper","Rock"], ["Scissors", "Paper"], ["Rock","Scissors"]
+  when %w(Paper Rock), %w(Scissors Paper), %w(Rock Scissors)
     puts "You LOSE! #{cpu_selection} beats #{player_selection}!"
-    cpu_score = cpu_score + 1
+    cpu_score += 1
     puts "---------------------------------"
     puts "Current Score: Player #{player_score}: CPU #{cpu_score}"
     puts "---------------------------------"
-  when  ["Scissors","Rock"], ["Rock","Paper"], ["Paper", "Scissors"]
+  when %w(Scissors Rock), %w(Rock Paper), %w(Paper Scissors)
     puts "You WIN! #{player_selection} beats #{cpu_selection}!"
-    player_score = player_score + 1
+    player_score += 1
     puts "---------------------------------"
     puts "Current Score: Player #{player_score}: CPU #{cpu_score}"
     puts "---------------------------------"
@@ -78,10 +78,10 @@ puts "---------------------------------"
 puts "FINAL SCORE: Player #{player_score}: CPU #{cpu_score}"
 puts "---------------------------------"
 
-  if player_score > cpu_score
-    puts "YOU WIN!"
-  else
-    puts "Better luck next time. CPU WINS!"
-  end
+if player_score > cpu_score
+  puts "YOU WIN!"
+else
+  puts "Better luck next time. CPU WINS!"
+end
 
 puts "Thanks for playing Rock, Paper, Scissors!"
