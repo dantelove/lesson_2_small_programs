@@ -32,8 +32,8 @@ def display_results(player, computer)
   end
 end
 
-player_score = 
-computer_score = 
+player_score = 0
+computer_score = 0
 
 loop do
   choice = ''
@@ -79,21 +79,14 @@ loop do
 
   display_results(choice, computer_choice)
 
-  if win?(choice, computer_choice)
-    player_score = player_score + 1
-  elsif win?(choice, computer_choice)
-    computer_choice = computer_score + 1
-  end
+  player_score += 1 if win?(choice, computer_choice)
+  computer_score += 1 if win?(computer_choice, choice)
 
-  prompt("Current Score: Player:#{player_score}, Computer:#{computer_score}")
+  prompt("Current Score: Player:#{player_score} Computer:#{computer_score}")
 
-  if player_score != 5 && computer_score != 5
-    redo
-  end
+  redo if player_score < 5 && computer_score < 5
 
-  player_score = 0
-  computer_score = 0
-
+  prompt("GAME OVER! Final Score: Player: #{player_score} Computer:#{computer_score}")
   prompt("Do you want to play again?")
   answer = Kernel.gets().chomp()
   break unless answer.downcase().start_with?('y')
