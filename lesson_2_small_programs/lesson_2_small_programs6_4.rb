@@ -14,8 +14,8 @@ def win?(first, second)
     (first == 'r' && second == 'l') ||
     (first == 'p' && second == 'r') ||
     (first == 'p' && second == 'S') ||
-    (first == 's' && second == 'p')||
-    (first == 's' && second == 'l')||
+    (first == 's' && second == 'p') ||
+    (first == 's' && second == 'l') ||
     (first == 'l' && second == 'S') ||
     (first == 'l' && second == 'p') ||
     (first == 'S' && second == 's') ||
@@ -89,6 +89,8 @@ loop do
   prompt("GAME OVER! Final Score: Player: #{player_score} Computer:#{computer_score}")
   prompt("Do you want to play again?")
   answer = Kernel.gets().chomp()
+  player_score = 0
+  computer_score = 0
   break unless answer.downcase().start_with?('y')
 end
 
