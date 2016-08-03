@@ -1,4 +1,4 @@
-# lesson_2_small_programs6_2.rb
+# lesson_2_small_programs6_3.rb
 # rock_paper_scissors.rb
 
 # this is me following along with the walkthrough
