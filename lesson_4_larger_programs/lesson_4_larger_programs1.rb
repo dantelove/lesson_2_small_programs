@@ -5,14 +5,18 @@
 
 require "pry"
 
-INITIAL_MARKER = " "
-PLAYER_MARKER = "X"
-COMPUTER_MARKER = "O"
+INITIAL_MARKER = " ".freeze
+PLAYER_MARKER = "X".freeze
+COMPUTER_MARKER = "O".freeze
+WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] + # rows
+                [[1, 4, 7], [2, 5, 8], [3, 6, 9]] + # cols
+                [[1, 5, 9], [3, 5, 7]].freeze       # diagonals
 
 def prompt(msg)
   puts "=>#{msg}"
 end
 
+# rubocop:disable Metrics/AbcSize
 def display_board(brd)
   system "clear"
   puts "You're #{PLAYER_MARKER}. Computer is #{COMPUTER_MARKER}."
@@ -30,21 +34,22 @@ def display_board(brd)
   puts "     |     |"
   puts ""
 end
+# rubocop:enable Metrics/AbcSize
 
 def initialize_board
   new_board = {}
-  (1..9).each {|num| new_board[num] = INITIAL_MARKER}
+  (1..9).each { |num| new_board[num] = INITIAL_MARKER }
   new_board
 end
 
 def empty_squares(brd)
-  brd.keys.select {|num| brd[num] == INITIAL_MARKER}
+  brd.keys.select { |num| brd[num] == INITIAL_MARKER }
 end
 
 def player_places_piece!(brd)
   square = " "
   loop do
-    prompt "Choose a square (#{empty_squares(brd).join(", ")}):"
+    prompt "Choose a square (#{empty_squares(brd).join(', ')}):"
     square = gets.chomp.to_i
     break if empty_squares(brd).include?(square)
     prompt "Sorry, that's not a valid choice."
@@ -66,25 +71,17 @@ def someone_won?(brd)
 end
 
 def detect_winner(brd)
-  winning_lines = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] + #rows
-                  [[1, 4, 7], [2, 5, 8], [3, 6, 9]] + #cols
-                  [[1, 5, 9], [3, 5, 7]]              #diagonals
-
-  winning_lines.each do |line|
-    if brd[line[0]] == PLAYER_MARKER && 
-       brd[line[1]] == PLAYER_MARKER && 
-       brd[line[2]] == PLAYER_MARKER
-       return "Player"
-    elsif brd[line[0]] == COMPUTER_MARKER && 
-       brd[line[1]] == COMPUTER_MARKER && 
-       brd[line[2]] == COMPUTER_MARKER
+  WINNING_LINES.each do |line|
+    if brd.values_at(*line).count(PLAYER_MARKER) == 3
+      return "Player"
+    elsif brd.values_at(*line).count(COMPUTER_MARKER) == 3
       return "Computer"
     end
   end
   nil
 end
 
-loop do 
+loop do
   board = initialize_board
 
   loop do
