@@ -1,8 +1,8 @@
-# lesson_4_larger_programs1_4.rb
+# lesson_4_larger_programs1_5.rb
 
 # TTT Bonus Features
 
-# 4 - Computer AI: Offense
+# 5 - Computer Refinements
 
 require "pry"
 
@@ -152,6 +152,14 @@ def winning_computer_places_piece!(brd)
     end
   end
   nil
+end
+
+def is_square_5_available?(brd)
+  true if brd[5] == " "
+end
+
+def computer_places_piece_on_5!(brd)
+  brd[5] = COMPUTER_MARKER
 end
 
 def detect_winner(brd)
