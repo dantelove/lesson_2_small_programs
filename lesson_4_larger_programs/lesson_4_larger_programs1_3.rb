@@ -1,8 +1,8 @@
-# lesson_4_larger_programs1_2.rb
+# lesson_4_larger_programs1_3.rb
 
 # TTT Bonus Features
 
-# 2 - Keep Score
+# 3 - Computer AI: Defense
 
 require "pry"
 
@@ -71,6 +71,46 @@ def someone_won?(brd)
   !!detect_winner(brd)
 end
 
+def computer_threatened?(brd)
+  WINNING_LINES.each do |value1, value2, value3|
+    case
+    when brd[value1] == PLAYER_MARKER &&
+         brd[value2] == PLAYER_MARKER &&
+         brd[value3] != COMPUTER_MARKER
+      return true
+    when brd[value2] == PLAYER_MARKER &&
+         brd[value3] == PLAYER_MARKER &&
+         brd[value1] != COMPUTER_MARKER
+      return true
+    when brd[value3] == PLAYER_MARKER &&
+         brd[value1] == PLAYER_MARKER &&
+         brd[value2] != COMPUTER_MARKER
+      return true
+    end
+  end
+  nil
+end
+
+def threatened_computer_places_piece!(brd)
+  WINNING_LINES.each do |value1, value2, value3|
+    case
+    when brd[value1] == PLAYER_MARKER &&
+         brd[value2] == PLAYER_MARKER &&
+         brd[value3] != COMPUTER_MARKER
+      brd[value3] = COMPUTER_MARKER
+    when brd[value2] == PLAYER_MARKER &&
+         brd[value3] == PLAYER_MARKER &&
+         brd[value1] != COMPUTER_MARKER
+      brd[value1] = COMPUTER_MARKER
+    when brd[value3] == PLAYER_MARKER &&
+         brd[value1] == PLAYER_MARKER &&
+         brd[value2] != COMPUTER_MARKER
+      brd[value2] = COMPUTER_MARKER
+    end
+  end
+  nil
+end
+
 def detect_winner(brd)
   WINNING_LINES.each do |line|
     if brd.values_at(*line).count(PLAYER_MARKER) == 3
@@ -105,8 +145,15 @@ loop do
       player_places_piece!(board)
       break if someone_won?(board) || board_full?(board)
 
-      computer_places_piece!(board)
+      case computer_threatened?(board)
+      when true
+        threatened_computer_places_piece!(board)
       break if someone_won?(board) || board_full?(board)
+      next
+      when nil
+        computer_places_piece!(board)
+      break if someone_won?(board) || board_full?(board)
+      end
     end
 
     display_board(board)
