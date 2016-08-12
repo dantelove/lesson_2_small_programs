@@ -2,7 +2,7 @@
 
 # TTT Bonus Features
 
-# 3 - Computer AI: Defense
+# 4 - Computer AI: Offense
 
 require "pry"
 
@@ -114,6 +114,46 @@ def threatened_computer_places_piece!(brd)
   nil
 end
 
+def can_computer_win?(brd)
+  WINNING_LINES.each do |value1, value2, value3|
+    case
+    when brd[value1] == COMPUTER_MARKER &&
+         brd[value2] == COMPUTER_MARKER &&
+         brd[value3] != PLAYER_MARKER
+      return true
+    when brd[value2] == COMPUTER_MARKER &&
+         brd[value3] == COMPUTER_MARKER &&
+         brd[value1] != PLAYER_MARKER
+      return true
+    when brd[value3] == COMPUTER_MARKER &&
+         brd[value1] == COMPUTER_MARKER &&
+         brd[value2] != PLAYER_MARKER
+      return true
+    end
+  end
+  nil
+end
+
+def winning_computer_places_piece!(brd)
+  WINNING_LINES.each do |value1, value2, value3|
+    case
+    when brd[value1] == COMPUTER_MARKER &&
+         brd[value2] == COMPUTER_MARKER &&
+         brd[value3] != PLAYER_MARKER
+      brd[value3] = COMPUTER_MARKER
+    when brd[value2] == COMPUTER_MARKER &&
+         brd[value3] == COMPUTER_MARKER &&
+         brd[value1] != PLAYER_MARKER
+      brd[value1] = COMPUTER_MARKER
+    when brd[value3] == COMPUTER_MARKER &&
+         brd[value1] == COMPUTER_MARKER &&
+         brd[value2] != PLAYER_MARKER
+      brd[value2] = COMPUTER_MARKER
+    end
+  end
+  nil
+end
+
 def detect_winner(brd)
   WINNING_LINES.each do |line|
     if brd.values_at(*line).count(PLAYER_MARKER) == 3
@@ -148,14 +188,16 @@ loop do
       player_places_piece!(board)
       break if someone_won?(board) || board_full?(board)
 
-      case computer_threatened?(board)
-      when true
+      case
+      when can_computer_win?(board)
+        winning_computer_places_piece!(board)
+        break if someone_won?(board) || board_full?(board)
+      when computer_threatened?(board)
         threatened_computer_places_piece!(board)
-      break if someone_won?(board) || board_full?(board)
-      next
-      when nil
+        break if someone_won?(board) || board_full?(board)
+      else 
         computer_places_piece!(board)
-      break if someone_won?(board) || board_full?(board)
+        break if someone_won?(board) || board_full?(board)
       end
     end
 
