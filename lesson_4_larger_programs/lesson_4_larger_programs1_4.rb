@@ -195,9 +195,6 @@ loop do
       when computer_threatened?(board)
         threatened_computer_places_piece!(board)
         break if someone_won?(board) || board_full?(board)
-      when is_square_5_available?(board)
-        computer_places_piece_on_5!(board)
-        break if someone_won?(board) || board_full?(board)
       else 
         computer_places_piece!(board)
         break if someone_won?(board) || board_full?(board)
