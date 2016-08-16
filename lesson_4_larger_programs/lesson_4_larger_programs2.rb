@@ -93,72 +93,86 @@ def won?(cards)
   true if current_score(cards) == 21
 end
 
-initialized_deck = FULL_DECK.to_a
-players_cards = []
-dealers_cards = []
-
-initial_deal!(initialized_deck, players_cards)
-initial_deal!(initialized_deck, dealers_cards)
-
-display_players_initial_cards(players_cards)
-
-display_players_score(players_cards)
-
-display_dealers_first_card(dealers_cards)
-
 loop do
-  puts "Type 'H' to Hit or 'S' to Stay."
+
+  initialized_deck = FULL_DECK.to_a
+  players_cards = []
+  dealers_cards = []
+
+  initial_deal!(initialized_deck, players_cards)
+  initial_deal!(initialized_deck, dealers_cards)
+
+  display_players_initial_cards(players_cards)
+
+  display_players_score(players_cards)
+
+  display_dealers_first_card(dealers_cards)
+
+  loop do
+    puts "Type 'H' to Hit or 'S' to Stay."
+    answer = gets.chomp.downcase
+
+    case answer
+    when "h"
+      deal!(initialized_deck, players_cards)
+      display_players_additional_cards(players_cards)
+      display_players_score(players_cards)
+
+      if busted?(players_cards)
+        puts "You BUSTED! Dealer WON!"
+        break
+      elsif won?(players_cards)
+        puts "21! You Won!"
+        break
+      else
+        redo
+      end
+
+    when "s"
+      break
+    else
+      puts "Please type H for 'Hit' or S for 'Stay'."
+    end
+  end
+
+  unless busted?(players_cards) || won?(players_cards)
+
+    display_dealers_second_card(dealers_cards)
+
+    display_dealers_full_score(dealers_cards)
+
+    loop do
+      if busted?(dealers_cards)
+        puts "Dealer Busted. You WON!"
+        break
+      elsif current_score(dealers_cards) > current_score(players_cards) ||
+        current_score(dealers_cards) == 21 && !busted(dealers_cards)
+        puts "Dealer WON!"
+        break
+      elsif current_score(dealers_cards) >= 17
+        puts "Dealer Stays."
+        if current_score(dealers_cards) == current_score(players_cards)
+          puts "It's a TIE!"
+          break
+        elsif current_score(dealers_cards) > current_score(players_cards) &&
+          !busted?(players_cards) && !busted(dealers_cards)
+          puts "Dealer WON!"
+          break
+        else
+          puts "You WON!"
+          break
+        end
+      else
+        deal!(initialized_deck, dealers_cards)
+        dispaly_dealers_additional_cards(dealers_cards)
+        display_dealers_full_score(dealers_cards)
+      end
+    end
+  end
+
+  puts "Thanks for playing 21!"
+  puts "Would you like to play again?"
   answer = gets.chomp.downcase
 
-  case answer
-  when "h"
-    deal!(initialized_deck, players_cards)
-    display_players_additional_cards(players_cards)
-    display_players_score(players_cards)
-
-    if busted?(players_cards)
-      puts "You BUSTED! Dealer Wins."
-      break
-    elsif won?(players_cards)
-      puts "21! You Won!"
-      exit
-    else
-      redo
-    end
-
-  when "s"
-    break
-  else
-    puts "Please type H for 'Hit' or S for 'Stay'."
-  end
+  break unless answer.start_with?("y")
 end
-
-  display_dealers_second_card(dealers_cards)
-
-  display_dealers_full_score(dealers_cards)
-
-loop do
-  if current_score(dealers_cards) > current_score(players_cards) ||
-    current_score(dealers_cards) == 21
-    puts "Dealer WON!"
-    break
-  elsif current_score(dealers_cards) >= 17
-    puts "Dealer Stays."
-    if current_score(dealers_cards) > current_score(players_cards) &&
-      !busted?(players_cards)
-      puts "Dealer WON!"
-      break
-    else
-      puts "You WON!"
-      break
-    end
-  elsif current_score(dealers_cards) > 21
-    puts "Dealer Busted. You WON!"
-    break
-  else
-    deal!(initialized_deck, dealers_cards)
-    dispaly_dealers_additional_cards(dealers_cards)
-    display_dealers_full_score(dealers_cards)
-  end
-end
-
