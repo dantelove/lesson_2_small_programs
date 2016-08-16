@@ -5,7 +5,7 @@
 FULL_DECK = { "two of hearts" => 2, "three of hearts" => 3, "four of hearts" => 4,
               "five of hearts" => 5, "six of hearts" => 6, "seven of hearts" => 7,
               "eight of hearts" => 8, "nine of hearts" => 9, "ten of hearts" => 10,
-              "Jack of hearts" => 10, "Queen of hearts" =>10, "King of hearts "=> 10,
+              "Jack of hearts" => 10, "Queen of hearts" =>10, "King of hearts"=> 10,
               "Ace of hearts" => [1, 11],
               "two of spades" => 2, "three of spades" => 3, "four of spades" => 4,
               "five of spades" => 5, "six of spades" => 6, "seven of spades" => 7,
@@ -45,22 +45,11 @@ def display_dealers_second_card(cards)
 end
 
 def display_dealers_partial_score(cards)
-  puts "The Dealer's is showing a score of #{cards[0][1]}."
+  puts "The Dealer is showing a score of #{cards[0][1]}."
 end
 
 def display_dealers_full_score(cards)
   puts "The Dealers's current score is #{current_score(cards)}."
-end
-
-def dealt_an_ace?(cards)
-  case cards[0]
-  when /Ace/
-    if current_score <= 10
-      cards[0][0] = 11
-    else
-      cards[0][0] = 1
-    end
-  end
 end
 
 def current_score(cards)
@@ -70,7 +59,17 @@ def current_score(cards)
     card_total << value2
   end
 
+  if !card_total.include?([1, 11])
   card_total.reduce(:+)
+  else
+    card_total.delete([1, 11])
+    if card_total.reduce(:+) <= 10
+      card_total << 11
+    else
+      card_total << 1
+    end
+    card_total.reduce(:+)
+  end
 end
 
 def display_players_score(cards) 
@@ -94,7 +93,6 @@ def won?(cards)
 end
 
 loop do
-
   initialized_deck = FULL_DECK.to_a
   players_cards = []
   dealers_cards = []
