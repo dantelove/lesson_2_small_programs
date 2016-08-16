@@ -23,8 +23,12 @@ FULL_DECK = { "two of hearts" => 2, "three of hearts" => 3, "four of hearts" => 
               "Jack of clubs" => 10, "Queen of clubs" => 10, "King of clubs" => 10,
               "Ace of clubs" => [1, 11] }.freeze
 
+def deal!(deck, recipient)
+  recipient << deck.delete_at(rand(deck.length))
+end
+
 def initial_deal!(deck, recipient)
-  2.times { recipient << deck.delete_at(rand(deck.length)) }
+  2.times { deal!(deck, recipient) }
 end
 
 def display_players_initial_cards(cards)
@@ -32,12 +36,20 @@ def display_players_initial_cards(cards)
   puts "You were dealt the #{cards[0][0]} & the #{cards[1][0]}."
 end
 
-def display_dealers_card(cards)
+def display_dealers_first_card(cards)
   puts "The dealer shows a #{cards[0][0]}."
+end
+
+def display_dealers_second_card(cards)
+  puts "The Dealer's second card is a #{cards[1][0]}."
 end
 
 def display_dealers_partial_score(cards)
   puts "The Dealer's is showing a score of #{cards[0][1]}."
+end
+
+def display_dealers_full_score(cards)
+  puts "The Dealers's current score is #{current_score(cards)}."
 end
 
 def dealt_an_ace?(cards)
@@ -65,36 +77,12 @@ def display_players_score(cards)
   puts "Your current Score is: #{current_score(cards)}."
 end
 
-def player_hit_or_stay(deck, recipient)
-  loop do
-    puts "Type 'H' to Hit or 'S' to Stay."
-    answer = gets.chomp.downcase
-
-    case answer
-    when "h"
-      recipient << deck.delete_at(rand(deck.length))
-      display_players_additional_cards(recipient)
-      display_players_score(recipient)
-
-      if busted?(recipient)
-        puts "You BUSTED! Dealer Wins"
-        break
-      elsif won?(recipient)
-        puts "21! You Won!"
-      else
-        redo
-      end
-
-    when "s"
-      break
-    else
-      puts "Please type H for 'Hit' or S for 'Stay'."
-    end
-  end
-end
-
 def display_players_additional_cards(cards)
   puts "You were dealt the #{cards.last[0]}."
+end
+
+def dispaly_dealers_additional_cards(cards)
+  puts "The Dealer drew a #{cards.last[0]}."
 end
 
 def busted?(cards)
@@ -116,6 +104,61 @@ display_players_initial_cards(players_cards)
 
 display_players_score(players_cards)
 
-display_dealers_card(dealers_cards)
+display_dealers_first_card(dealers_cards)
 
-player_hit_or_stay(initialized_deck, players_cards)
+loop do
+  puts "Type 'H' to Hit or 'S' to Stay."
+  answer = gets.chomp.downcase
+
+  case answer
+  when "h"
+    deal!(initialized_deck, players_cards)
+    display_players_additional_cards(players_cards)
+    display_players_score(players_cards)
+
+    if busted?(players_cards)
+      puts "You BUSTED! Dealer Wins."
+      break
+    elsif won?(players_cards)
+      puts "21! You Won!"
+      exit
+    else
+      redo
+    end
+
+  when "s"
+    break
+  else
+    puts "Please type H for 'Hit' or S for 'Stay'."
+  end
+end
+
+  display_dealers_second_card(dealers_cards)
+
+  display_dealers_full_score(dealers_cards)
+
+loop do
+  if current_score(dealers_cards) > current_score(players_cards) ||
+    current_score(dealers_cards) == 21
+    puts "Dealer WON!"
+    break
+  elsif current_score(dealers_cards) >= 17
+    puts "Dealer Stays."
+    if current_score(dealers_cards) > current_score(players_cards) &&
+      !busted?(players_cards)
+      puts "Dealer WON!"
+      break
+    else
+      puts "You WON!"
+      break
+    end
+  elsif current_score(dealers_cards) > 21
+    puts "Dealer Busted. You WON!"
+    break
+  else
+    deal!(initialized_deck, dealers_cards)
+    dispaly_dealers_additional_cards(dealers_cards)
+    display_dealers_full_score(dealers_cards)
+  end
+end
+
