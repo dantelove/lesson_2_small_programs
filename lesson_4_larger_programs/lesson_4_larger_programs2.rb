@@ -1,8 +1,10 @@
 # lesson_4_larger_programs2.rb
 
 # 21 - Card Game
-# Created based on the rules of the game without referencing launchschool 
+# Created based on the rules of the game without referencing launchschool
 # step-by-step solutions.
+
+require "pry"
 
 FULL_DECK = { "two of hearts" => 2, "three of hearts" => 3, "four of hearts" => 4,
               "five of hearts" => 5, "six of hearts" => 6, "seven of hearts" => 7,
